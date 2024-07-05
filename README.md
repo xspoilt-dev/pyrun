@@ -1,5 +1,4 @@
-<h4 align="center"><b>Python Script Runner with Auto-Dependency Installer</b></h4>
-
+#### Python Runner with Dependency Installer
 
 Pyrun allows you to run any Python file, automatically detecting and installing missing libraries to prevent runtime errors. 
 
