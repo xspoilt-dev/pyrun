@@ -1,20 +1,11 @@
+#!/data/data/com.termux/files/usr/bin/python3.11
+# -*- coding: utf-8 -*-
 """
 ------------------------------------
 Coded by : @x_spoilt 
 Uploaded by : @exotic_obfuscation
 Github   : team-peaky-xd
 ------------------------------------
-
-
-Features : 
-- Detect Library's 
-- Detect Installed Library's
-- Install Library (Auto)
-- Open-Source
-
-Main-Feature : No ModuleNotFound Error ! 
-
-
 
 """
 import subprocess as __0x1
