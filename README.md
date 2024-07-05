@@ -43,4 +43,4 @@ mv pyrun /data/data/com.termux/files/usr/bin
 
 ### Contact
 
-For any questions or suggestions, feel free to open an issue or contact [author](https://www.facebook.com/xspoilt)
+For any questions or suggestions, feel free to open an issue or contact [Developer](https://www.facebook.com/xspoilt)
