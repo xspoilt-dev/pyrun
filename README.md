@@ -1,6 +1,3 @@
-
-Exotıc
-Exotıc Hrıdoy
 <h4 align="center"><b>Python Script Runner with Auto-Dependency Installer</b></h4>
 
 
@@ -21,7 +18,9 @@ Pyrun allows you to run any Python file, automatically detecting and installing 
 ```bash
 git clone https://github.com/team-peaky-xd/pyrun
 cd pyrun
-
+mv pyrun.py pyrun
+chmod +x pyrun
+mv pyrun /data/data/com.termux/files/usr/bin
 ```
 ### Usage
 
