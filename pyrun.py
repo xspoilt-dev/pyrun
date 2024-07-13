@@ -51,9 +51,10 @@ if __name__ == "__main__":
     
     __0xA = __0x2.argv[1]
     
-    if not __0x3.exists(__0xA):
+    if not __0x3.path.exists(__0xA):
         print(f"{__0xA} does not exist.")
         __0x2.exit(1)
 
     __0x9(__0xA)
     __0x13(__0xA)
+    
