@@ -15,7 +15,7 @@ Pyrun allows you to run any Python file, automatically detecting and installing 
 
 ### Installation
 ```bash
-git clone https://github.com/team-peaky-xd/pyrun
+git clone https://github.com/xspoilt-dev/pyrun
 cd pyrun
 mv pyrun.py pyrun
 chmod +x pyrun
