@@ -4,7 +4,7 @@
 ------------------------------------
 Coded by : @x_spoilt 
 Uploaded by : @exotic_obfuscation
-Github   : team-peaky-xd
+Github   : xspoilt-dev
 ------------------------------------
 
 """
