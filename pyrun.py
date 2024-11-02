@@ -1,60 +1,121 @@
-#!/data/data/com.termux/files/usr/bin/python3.11
 # -*- coding: utf-8 -*-
-"""
-------------------------------------
-Coded by : @x_spoilt 
-Uploaded by : @exotic_obfuscation
-Github   : xspoilt-dev
-------------------------------------
+__author__ = "x_spoilt"
+__version__ = "1.0.0"
+__description__ = "A script to minify and run Python scripts."
+__GitHub__ = "xspoilt-dev"
 
-"""
-import subprocess as __0x1
-import sys as __0x2
-import os as __0x3
-import importlib.util as __0x4
+from subprocess import check_call, run, check_output
+from sys import executable, argv, exit
+from os.path import exists
+from importlib.util import find_spec
+from ast import parse, Module, FunctionDef, ClassDef, If, Expr, Constant
 
-def __0x5(__0x6):
-    __0x1.check_call([__0x2.executable, "-m", "pip", "install", __0x6])
+class _0xA:
+    def __init__(self, _0xB, _0xC=False):
+        self.__0xB = _0xB
+        self.__0xC = _0xC
+        self.__0xD()
 
-def __0x7(__0x8):
-    return __0x4.find_spec(__0x8) is not None
+    def __0xD(self):
+        """Ensure astor is installed."""
+        if not self.__0xE("astor"):
+            print("Installing astor...")
+            self.__0xF("astor")
+        global astor
+        import astor
 
-def __0x9(__0xA):
-    with open(__0xA, 'r') as __0xB:
-        __0xC = __0xB.readlines()
-    
-    __0xD = set()
-    for __0xE in __0xC:
-        __0xE = __0xE.strip()
-        if __0xE.startswith('import '):
-            __0xF = __0xE.split()[1].split('.')[0]
-            __0xD.add(__0xF)
-        elif __0xE.startswith('from '):
-            __0xF = __0xE.split()[1].split('.')[0]
-            __0xD.add(__0xF)
-    
-    __0x10 = __0x1.check_output([__0x2.executable, "-m", "pip", "freeze"]).decode("utf-8").split('\n')
-    __0x10 = [__0x11.split('==')[0] for __0x11 in __0x10]
+    def __0xF(self, _0xG):
+        """Install the specified package."""
+        check_call([executable, "-m", "pip", "install", _0xG])
 
-    for __0x12 in __0xD:
-        if not __0x7(__0x12) and __0x12 not in __0x10:
-            print(f"Installing {__0x12}...")
-            __0x5(__0x12)
+    def __0xE(self, _0xH):
+        """Check if a module is installed."""
+        return find_spec(_0xH) is not None
 
-def __0x13(__0xA):
-    __0x1.run([__0x2.executable, __0xA])
+    def __0xI(self):
+        """Check and install any missing packages used in the script."""
+        with open(self.__0xB, 'r') as f:
+            _0xJ = f.readlines()
+
+        _0xK = set()
+        for _0xL in _0xJ:
+            _0xL = _0xL.strip()
+            if _0xL.startswith('import '):
+                _0xM = _0xL.split()[1].split('.')[0]
+                _0xK.add(_0xM)
+            elif _0xL.startswith('from '):
+                _0xM = _0xL.split()[1].split('.')[0]
+                _0xK.add(_0xM)
+
+        _0xN = [pkg.split('==')[0] for pkg in check_output(
+            [executable, "-m", "pip", "freeze"]).decode("utf-8").split('\n')]
+
+        for _0xM in _0xK:
+            if not self.__0xE(_0xM) and _0xM not in _0xN:
+                print(f"Installing {_0xM}...")
+                self.__0xF(_0xM)
+
+    def __0xO(self, _0xP):
+        """Remove docstrings and comments from the AST."""
+        if isinstance(_0xP, Module):
+            _0xP.body = [self.__0xO(_0xQ) for _0xQ in _0xP.body if not self.__0xR(_0xQ)]
+        elif isinstance(_0xP, FunctionDef):
+            _0xP.body = [self.__0xO(_0xQ) for _0xQ in _0xP.body if not self.__0xR(_0xQ)]
+        elif isinstance(_0xP, ClassDef):
+            _0xP.body = [self.__0xO(_0xQ) for _0xQ in _0xP.body if not self.__0xR(_0xQ)]
+        elif isinstance(_0xP, If):
+            _0xP.body = [self.__0xO(_0xQ) for _0xQ in _0xP.body if not self.__0xR(_0xQ)]
+            if _0xP.orelse:
+                _0xP.orelse = [self.__0xO(_0xQ) for _0xQ in _0xP.orelse if not self.__0xR(_0xQ)]
+        return _0xP
+
+    def __0xR(self, _0xQ):
+        """Check if a node is a docstring."""
+        return isinstance(_0xQ, Expr) and isinstance(_0xQ.value, Constant) and isinstance(_0xQ.value.value, str)
+
+    def __0xS(self):
+        """Minify the script by removing docstrings and comments."""
+        with open(self.__0xB, 'r') as f:
+            _0xT = f.read()
+
+        _0xU = parse(_0xT)
+        _0xU = self.__0xO(_0xU)
+
+        _0xV = astor.to_source(_0xU)
+        _0xV = "\n".join([_0xW for _0xW in _0xV.splitlines() if _0xW.strip()])
+
+        _0xX = self.__0xB.replace('.py', '_minified.py')
+        with open(_0xX, 'w') as f:
+            f.write(_0xV)
+
+        print(f"Minified script written to {_0xX}")
+        return _0xX
+
+    def __0xY(self):
+        """Run the specified script."""
+        run([executable, self.__0xB])
+
+    def execute(self):
+        """Execute the process of checking, minifying, and running the script."""
+        if not exists(self.__0xB):
+            print(f"{self.__0xB} does not exist.")
+            exit(1)
+
+        self.__0xI()
+
+        if self.__0xC:
+            self.__0xB = self.__0xS()
+
+        self.__0xY()
+
 
 if __name__ == "__main__":
-    if len(__0x2.argv) != 2:
-        print("Usage: pyrun <script_path>")
-        __0x2.exit(1)
-    
-    __0xA = __0x2.argv[1]
-    
-    if not __0x3.path.exists(__0xA):
-        print(f"{__0xA} does not exist.")
-        __0x2.exit(1)
+    if len(argv) < 2 or len(argv) > 3:
+        print("Usage: pyrun <script_path> [--minify]")
+        exit(1)
 
-    __0x9(__0xA)
-    __0x13(__0xA)
-    
+    _0xB = argv[1]
+    _0xC = len(argv) == 3 and argv[2] == '--minify'
+
+    _0xZ = _0xA(_0xB, _0xC)
+    _0xZ.execute()
